@@ -7,4 +7,4 @@ This PowerShell script automates the process of updating a container image in an
 ### You provide parameters like:
 - Azure tenant ID, subscription ID, resource group, and AKS cluster name
 - Kubernetes namespace, deployment name, container name, and the new Docker image to deploy
-This helps ensure **faster rollouts and zero manual configuration changes** when deploying updates.
+#### This helps ensure **faster rollouts and zero manual configuration changes** when deploying updates.
