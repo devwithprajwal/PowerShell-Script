@@ -8,3 +8,43 @@ This PowerShell script automates the process of updating a container image in an
 - Azure tenant ID, subscription ID, resource group, and AKS cluster name
 - Kubernetes namespace, deployment name, container name, and the new Docker image to deploy
 #### This helps ensure **faster rollouts and zero manual configuration changes** when deploying updates.
+### Workflow :
+
+1. This contains all the **essential parameters** required to run the script
+   
+```yaml
+param (
+    [Parameter(Mandatory=$true)]
+    [string]$tenantid,
+    [Parameter(Mandatory=$true)]
+    [string]$subcriptionid,
+    [Parameter(Mandatory=$true)]
+    [string]$ResourceGroup,
+    [Parameter(Mandatory=$true)]
+    [string]$clustername,
+    # Define deployment, container name, and new image
+    [Parameter(Mandatory=$true)]
+    [string]$Namespace,
+    [Parameter(Mandatory=$true)]
+    [string]$DeploymentName,
+    [Parameter(Mandatory=$true)]
+    [string]$ContainerName,
+    [Parameter(Mandatory=$true)]
+    [string]$NewImage
+
+)
+```
+2. This is the **Azure Authentication step** and makes use of all the parsmeters mentioned above
+
+```yaml
+az login --tenant $($tenantid) --use-device-code
+
+az account set --subscription $($subcriptionid)
+
+az aks get-credentials --resource-group $($ResourceGroup) --name $($clustername) --overwrite-existing
+```
+3. An **Imperative command** that updates the container image of an specific deployment
+
+```yaml
+kubectl set image deployment/$DeploymentName $ContainerName=$NewImage -n $Namespace
+```
