@@ -34,7 +34,7 @@ param (
 
 )
 ```
-2. This is the **Azure Authentication step** and makes use of all the parsmeters mentioned above
+2. This is the **Azure Authentication step** and makes use of all the parameters mentioned above
 
 ```yaml
 az login --tenant $($tenantid) --use-device-code
