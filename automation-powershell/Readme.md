@@ -3,10 +3,10 @@ This PowerShell script automates the process of getting the details of **Pods an
 ### It works by :
 - **Authenticating** with Azure using provided tenant and subscription details.
 - **Connecting** to an existing AKS cluster (aks-praj) using az aks get-credentials.
-- **Updating** the specified Kubernetes deployment using the kubectl set image command to replace the current container image with a new one.
+- **Getting** the details of the pods and nodes by executing the necessary **KubeCtl commands**.
 ### You provide parameters like :
-- Azure tenant ID, subscription ID, resource group, and AKS cluster name
-- Kubernetes namespace, deployment name, container name, and the new Docker image to deploy
+- Azure tenant ID, subscription ID, resource group, and AKS cluster name.
+
 #### This helps ensure **faster rollouts and zero manual configuration changes** when deploying updates.
 ### Workflow :
 
@@ -21,17 +21,7 @@ param (
     [Parameter(Mandatory=$true)]
     [string]$ResourceGroup,
     [Parameter(Mandatory=$true)]
-    [string]$clustername,
-    # Define deployment, container name, and new image
-    [Parameter(Mandatory=$true)]
-    [string]$Namespace,
-    [Parameter(Mandatory=$true)]
-    [string]$DeploymentName,
-    [Parameter(Mandatory=$true)]
-    [string]$ContainerName,
-    [Parameter(Mandatory=$true)]
-    [string]$NewImage
-
+    [string]$clustername
 )
 ```
 2. This is the **Azure Authentication step** and makes use of all the parameters mentioned above
@@ -43,8 +33,10 @@ az account set --subscription $($subcriptionid)
 
 az aks get-credentials --resource-group $($ResourceGroup) --name $($clustername) --overwrite-existing
 ```
-3. An **Imperative command** that updates the container image of an specific deployment
+3. An **KubeCtl command** that gives the details of the **PODS and NODES**
 
 ```yaml
-kubectl set image deployment/$DeploymentName $ContainerName=$NewImage -n $Namespace
+kubectl get pods
+
+kubectl get nodes
 ```
